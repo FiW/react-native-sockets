@@ -100,7 +100,7 @@ public class SocketClient {
                     String message = params[0];
                     OutputStream outputStream = clientSocket.getOutputStream();
                     PrintStream printStream = new PrintStream(outputStream);
-                    printStream.print(message + (char) EOT);
+                    printStream.print(message);
                     printStream.flush();
                     //debug log
                     Log.d(eTag, "client sent message: " + message);
