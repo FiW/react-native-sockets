@@ -184,6 +184,7 @@ public class SocketClient {
                     //debug log
                     Log.d(eTag, "client received message: " + data);
                     //emit event
+                    data += (char) incomingByte;
                     WritableMap eventParams = Arguments.createMap();
                     eventParams.putString("data", data);
                     sendEvent(mReactContext, event_data, eventParams);
