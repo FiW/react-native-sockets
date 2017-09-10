@@ -48,7 +48,7 @@ public class SocketClient {
     private boolean isFirstConnect = true;
     private BufferedInputStream bufferedInput;
     private boolean readingStream = false;
-    private final byte EOT = 0x04;
+    private final byte EOT = 0x0A;
 
     SocketClient(ReadableMap params, ReactContext reactContext) {
         //String addr, int port, boolean autoReconnect
@@ -100,7 +100,7 @@ public class SocketClient {
                     String message = params[0];
                     OutputStream outputStream = clientSocket.getOutputStream();
                     PrintStream printStream = new PrintStream(outputStream);
-                    printStream.print(message);
+                    printStream.print(message + (char) EOT);
                     printStream.flush();
                     //debug log
                     Log.d(eTag, "client sent message: " + message);
@@ -180,7 +180,7 @@ public class SocketClient {
                     //emit event
                     WritableMap eventParams = Arguments.createMap();
                     sendEvent(mReactContext, event_closed, eventParams);
-                } else {
+                } else if (incomingByte == EOT) {
                     //debug log
                     Log.d(eTag, "client received message: " + data);
                     //emit event
@@ -189,6 +189,8 @@ public class SocketClient {
                     sendEvent(mReactContext, event_data, eventParams);
                     //clear incoming
                     data = "";
+                } else {
+                    data += (char) incomingByte;
                 }
             }
         } catch (IOException e) {
