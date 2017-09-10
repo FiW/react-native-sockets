@@ -180,7 +180,7 @@ public class SocketClient {
                     //emit event
                     WritableMap eventParams = Arguments.createMap();
                     sendEvent(mReactContext, event_closed, eventParams);
-                } else if (incomingByte == EOT) {
+                } else {
                     //debug log
                     Log.d(eTag, "client received message: " + data);
                     //emit event
@@ -189,8 +189,6 @@ public class SocketClient {
                     sendEvent(mReactContext, event_data, eventParams);
                     //clear incoming
                     data = "";
-                } else {
-                    data += (char) incomingByte;
                 }
             }
         } catch (IOException e) {
